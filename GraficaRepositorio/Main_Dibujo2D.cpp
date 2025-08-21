@@ -125,16 +125,12 @@ int main() {
       // glPointSize(10);
       // glDrawArrays(GL_POINTS,0,4);
 
-
 		//ejercicios 2 Mostrar 2 lineas 
 		//glDrawArrays(GL_LINES, 0, 2);
 	   //glDrawArrays(GL_LINES,2,4);
 
-
 	   //ejercicio 3: Voltear el triangulo
 	  glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
-
-
 
 	  //Ejercicio4: mostrar todo el cuadrado
 	  //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
