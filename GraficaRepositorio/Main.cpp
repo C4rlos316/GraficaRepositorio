@@ -8,7 +8,7 @@
 
 const GLint WIDTH = 800, HEIGHT = 600;
 
-// Shaders
+// Shaders constantes que declaramos 
 const GLchar* vertexShaderSource = 
 {
 	"#version 330 core\n"
@@ -38,6 +38,7 @@ void CrearShader(void);
 int main() {
 	glfwInit();
 	//Verificación de compatibilidad 
+	//confoigurar opengl versiones 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -47,7 +48,7 @@ int main() {
 	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Practica 0", nullptr, nullptr);
 	
 	int screenWidth, screenHeight;
-
+	//Definimos buffers de la ve
 	glfwGetFramebufferSize(window, &screenWidth, &screenHeight);
 
 	//Verificación de errores de creacion  ventana
