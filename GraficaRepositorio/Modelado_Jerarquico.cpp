@@ -21,7 +21,14 @@ movZ = -5.0f,
 rot = 0.0f;
 
 //For model
-float	hombro = 0.0f,codo = 0.0f, muneca=0.0f,dedo1=0.0f,dedo2=0.0f,dedo3=0.0f,falange1=0.0f,falange2=0.0f;
+float	hombro = 0.0f,
+
+codo = 0.0f,
+
+muneca=0.0f,
+dedo1=0.0f,dedo2=0.0f,
+dedo3=0.0f,falange1=0.0f,
+falange2=0.0,falange3=0.0f;
 
 
 int main() {
@@ -203,6 +210,7 @@ int main() {
 		
 		//Modelo bicep
 		model = glm::rotate(model, glm::radians(hombro), glm::vec3(0.0f, 0.0, 1.0f)); //hombro
+		//le guardamos lo que llevamos de modelo a la matriz temporal 
 		modelTemp = model = glm::translate(model, glm::vec3(1.5f, 0.0f, 0.0f));//le estamos pasando donde se fija 
 		model = glm::scale(model, glm::vec3(3.0f, 1.0f, 1.0f));
 		color = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -213,8 +221,11 @@ int main() {
 
 
 		//modelo antebrazo
+		//modelTemp guarda la matriz del bicep y le pasamos el valor de la traslacion
 		model = glm::translate(modelTemp, glm::vec3(1.5f, 0.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(codo), glm::vec3(0.0f, 1.0f, 0.0f)); //codo hombro
+		//ahora pasamos la matriz a la posicion donde quiero dibujar el siguiente elemento
+		//usamos la matriz auxiliar y lo trasladamos 1 en X
 		modelTemp = model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(2.0f, 1.0f, 1.0f));
 		color = glm::vec3(1.0f, 0.0f, 0.0f);
@@ -223,9 +234,13 @@ int main() {
 		glDrawArrays(GL_TRIANGLES, 0, 36);//A
 
 
+
 		//modelo muñeca color blanco ancho .5 , rotamos sobre X 
+		//Se tralada sobre 1 para saber donde termina el elemento anterior
 		model = glm::translate(modelTemp, glm::vec3(1.0f, 0.0f, 0.0f));//se traslada 1 al anterior
 		model = glm::rotate(model, glm::radians(muneca), glm::vec3(1.0f, 0.0f, 0.0f)); //muneca rota X
+		//hacemos uso de la variable temporal 2 y la igualamos a la 1
+		//se traslada la mitad del cubo
 		modelTemp2 = modelTemp = glm::translate(model, glm::vec3(0.25f, 0.0f, 0.0f));//trasladamos la mitad del cubo
 		model = glm::scale(model, glm::vec3(0.5f, 1.0f, 1.0f));//y luego escalamos
 		color = glm::vec3(1.0f, 1.0f, 1.0f);
@@ -236,9 +251,9 @@ int main() {
 
 
 		//Dedo 1
-		model = glm::translate(modelTemp, glm::vec3(0.25f, 0.35f, 0.0f)); // un poco más abajo en Z
-		model = glm::rotate(model, glm::radians(dedo1), glm::vec3(0.0f, 0.0f, 1.0f)); //muneca rota X
-		modelTemp2 = modelTemp = glm::translate(model, glm::vec3(0.125f, 0.0f, 0.0f));//trasladamos la mitad del cubo
+		model = glm::translate(modelTemp, glm::vec3(0.25f, 0.35f, 0.0f)); 
+		model = glm::rotate(model, glm::radians(dedo1), glm::vec3(0.0f, 0.0f, 1.0f)); 
+		modelTemp = glm::translate(model, glm::vec3(0.125f, 0.0f, 0.0f));//trasladamos la mitad del cubo
 		model = glm::scale(model, glm::vec3(0.6f, 0.2f, 0.2f));//y luego escalamos
 		color = glm::vec3(1.0f, 0.0f, 1.0f);
 		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
@@ -246,28 +261,57 @@ int main() {
 		glDrawArrays(GL_TRIANGLES, 0, 36);//A
 
 		//Falange 1 
-		model = glm::translate(modelTemp, glm::vec3(0.3f, 0.0f, 0.0f)); // un poco más arriba en Z
-		model = glm::rotate(model, glm::radians(falange1), glm::vec3(0.0f, 0.0f, 1.0f)); //muneca rota X
-		modelTemp = modelTemp = glm::translate(model, glm::vec3(0.2f, 0.0f, 0.0f));//trasladamos la mitad del cubo
+		model = glm::translate(modelTemp, glm::vec3(0.3f, 0.0f, 0.0f)); 
+		model = glm::rotate(model, glm::radians(falange1), glm::vec3(0.0f, 0.0f, 1.0f));
+		modelTemp = glm::translate(model, glm::vec3(0.2f, 0.0f, 0.0f));//trasladamos la mitad del cubo
+		model = glm::scale(model, glm::vec3(0.4f, 0.2f, 0.2f));//y luego escalamos
+		color = glm::vec3(1.0f, 1.0f, 0.0f);
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);//A
+		
+
+
+		//Dedo 2
+		model = glm::translate(modelTemp2, glm::vec3(0.25f, 0.35f, 0.4f));
+		model = glm::rotate(model, glm::radians(dedo2), glm::vec3(0.0f, 0.0f, 1.0f));
+		modelTemp = glm::translate(model, glm::vec3(0.125f, 0.0f, 0.0f));//trasladamos la mitad del cubo
+		model = glm::scale(model, glm::vec3(0.6f, 0.2f, 0.2f));//y luego escalamos
+		color = glm::vec3(0.0f, 0.0f, 1.0f);
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);//A
+
+		//Falange 2
+		model = glm::translate(modelTemp, glm::vec3(0.3f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(falange2), glm::vec3(0.0f, 0.0f, 1.0f));
+		modelTemp = glm::translate(model, glm::vec3(0.2f, 0.0f, 0.0f));//trasladamos la mitad del cubo
 		model = glm::scale(model, glm::vec3(0.4f, 0.2f, 0.2f));//y luego escalamos
 		color = glm::vec3(1.0f, 1.0f, 0.0f);
 		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glDrawArrays(GL_TRIANGLES, 0, 36);//A
 
-
-
-
-
-		//Dedo 2 A 
-		model = glm::translate(modelTemp, glm::vec3(0.25f, 0.35f, 0.0f)); // un poco más arriba en Z
-		model = glm::rotate(model, glm::radians(falange1), glm::vec3(0.0f, 0.0f, 1.0f)); //muneca rota X
-		modelTemp = modelTemp = glm::translate(model, glm::vec3(0.3f, 0.0f, 0.0f));//trasladamos la mitad del cubo
+		//Dedo 3
+		model = glm::translate(modelTemp2, glm::vec3(0.25f, 0.35f, -0.4f));
+		model = glm::rotate(model, glm::radians(dedo3), glm::vec3(0.0f, 0.0f, 1.0f)); 
+		modelTemp = glm::translate(model, glm::vec3(0.125f, 0.0f, 0.0f));//trasladamos la mitad del cubo
 		model = glm::scale(model, glm::vec3(0.6f, 0.2f, 0.2f));//y luego escalamos
+		color = glm::vec3(0.0f, 0.0f, 1.0f);
+		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_TRIANGLES, 0, 36);//A
+
+		//Falange 3
+		model = glm::translate(modelTemp, glm::vec3(0.3f, 0.0f, 0.0f)); 
+		model = glm::rotate(model, glm::radians(falange3), glm::vec3(0.0f, 0.0f, 1.0f));
+		modelTemp = glm::translate(model, glm::vec3(0.2f, 0.0f, 0.0f));//trasladamos la mitad del cubo
+		model = glm::scale(model, glm::vec3(0.4f, 0.2f, 0.2f));//y luego escalamos
 		color = glm::vec3(1.0f, 1.0f, 0.0f);
 		glUniform3fv(uniformColor, 1, glm::value_ptr(color));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glDrawArrays(GL_TRIANGLES, 0, 36);//A
+
 
 
 		glBindVertexArray(0);
@@ -289,21 +333,21 @@ int main() {
 	 if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)  //GLFW_RELEASE
 		 glfwSetWindowShouldClose(window, true);
 	 if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		 movX += 0.08f;
+		 movX += 0.01f;
 	 if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		 movX -= 0.08f;
+		 movX -= 0.01f;
 	 if (glfwGetKey(window,GLFW_KEY_UP) == GLFW_PRESS)
-		 movY += 0.08f;
+		 movY += 0.01f;
 	 if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-		 movY -= 0.08f;
+		 movY -= 0.01f;
 	 if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		 movZ -= 0.08f;
+		 movZ -= 0.01f;
 	 if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		 movZ += 0.08f;
+		 movZ += 0.01f;
 	 if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-		 rot += 0.18f;
+		 rot += 0.01f;
 	 if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-		 rot -= 0.18f;
+		 rot -= 0.01f;
 	 if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
 		 hombro += 0.18f;
 	 if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS)
@@ -312,22 +356,34 @@ int main() {
 		 codo += 0.18f;
 	 if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
 		 codo -= 0.18f;
-
 	 if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS)
 		 muneca += 0.18f;
 	 if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS)
 		 muneca -= 0.18f;
-
 	 if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
 		 dedo1 += 0.18f;
 	 if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
 		 dedo1 -= 0.18f;
-
 	 if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
 		 falange1 += 0.18f;
 	 if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS)
 		 falange1 -= 0.18f;
-
+	 if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
+		 dedo2 += 0.18f;
+	 if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
+		 dedo2 -= 0.18f;
+	 if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
+		 falange2 += 0.18f;
+	 if (glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS)
+		 falange2 -= 0.18f;
+	 if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
+		 dedo3 += 0.18f;
+	 if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS)
+		 dedo3 -= 0.18f;
+	 if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS)
+		 falange3 += 0.18f;
+	 if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
+		 falange3 -= 0.18f;
  }
 
 
